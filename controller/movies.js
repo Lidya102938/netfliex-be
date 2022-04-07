@@ -14,9 +14,10 @@ module.exports = {
   },
 
   getMovies: async (req, res) => {
+    const id = req.params.id;
     axios
       .get(
-        `https://api.themoviedb.org/3/discover/movie?api_key=3554211ccddedad28b58fe56cd457b08&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`
+        `https://api.themoviedb.org/3/discover/movie?api_key=3554211ccddedad28b58fe56cd457b08&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${id}&with_watch_monetization_types=flatrate`
       )
       .then((response) => {
         res.status(200).json({ data: response.data.results });
@@ -33,6 +34,45 @@ module.exports = {
       )
       .then((response) => {
         res.status(200).json({ data: response.data.genres });
+      })
+      .cath((err) => {
+        res.status(404).json({ message: err.message });
+      });
+  },
+  getPopular: async (req, res) => {
+    axios
+      .get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=3554211ccddedad28b58fe56cd457b08&language=en-US&page=8`
+      )
+      .then((response) => {
+        res.status(200).json({ data: response.data.results });
+      })
+      .cath((err) => {
+        res.status(404).json({ message: err.message });
+      });
+  },
+  getDetail: async (req, res) => {
+    const id = req.params.id;
+    axios
+      .get(
+        `https://api.themoviedb.org/3/movie/${id}?api_key=3554211ccddedad28b58fe56cd457b08&language=en-US`
+      )
+      .then((response) => {
+        res.status(200).json({ data: response.data });
+      })
+      .cath((err) => {
+        res.status(404).json({ message: err.message });
+      });
+  },
+  getCasting: async (req, res) => {
+    const id = req.params.id;
+    axios
+      .get(
+        `
+        https://api.themoviedb.org/3/movie/${id}/credits?api_key=3554211ccddedad28b58fe56cd457b08&language=en-US`
+      )
+      .then((response) => {
+        res.status(200).json({ data: response.data });
       })
       .cath((err) => {
         res.status(404).json({ message: err.message });

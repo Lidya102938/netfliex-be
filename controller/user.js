@@ -1,10 +1,10 @@
 const { User } = require("../helper/relation");
 const { hash, compare } = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const saltRound = 10;
 
 module.exports = {
   signUp: async (req, res) => {
-    const saltRound = 10;
     const password = req.body.password;
     const hashPassword = await hash(password, saltRound);
     try {
@@ -13,7 +13,7 @@ module.exports = {
         fullName: req.body.fullName,
         password: hashPassword,
       });
-      res.json(data);
+      res.status(202).json({ message: "Succes sign up", data: data });
     } catch (Error) {
       console.log(Error);
       res.status(422).json({ message: Error.sqlMessage });
@@ -30,11 +30,11 @@ module.exports = {
         },
       });
       if (!data) {
-        throw Error("Data tidak ditemukan");
+        res.status(404).json({ message: "Data tidak ditemukan" });
       }
       const isVeryvied = await compare(password, data.password);
       if (!isVeryvied) {
-        throw Error("Password salah");
+        res.status(404).json({ message: "password/email salah" });
       }
 
       const payload = {
@@ -43,7 +43,7 @@ module.exports = {
       };
       const token = jwt.sign(payload, "token");
       res.json({
-        message: "Berhasil masuk",
+        message: "succes masuk",
         fullName: data.fullName,
         token: token,
       });
@@ -52,21 +52,46 @@ module.exports = {
     }
   },
   update: async function (req, res) {
-    const id = req.params.id;
-    const data = await User.update(
-      { email: req.body.email, password: req.body.password },
-      {
-        where: {
-          id: id,
+    try {
+      const id = req.params.id;
+      const password = req.body.password;
+      const hashPassword = await hash(password, saltRound);
+      const data = await User.update(
+        {
+          fullName: req.body.fullName,
+          email: req.body.email,
+          password: hashPassword,
         },
-      }
-    );
-    res.json({ message: "Data berhasil di update" });
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+      res.json({ message: "Data succes di update" });
+    } catch (error) {
+      res.json({ message: error.message });
+    }
+  },
+  uploadAvatar: async (req, res) => {
+    try {
+      const data = await User.update(
+        {
+          image: req.file.filename,
+        },
+        {
+          where: { id: req.params.id },
+        }
+      );
+      res.status(202).json({ message: "Success update user" });
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
   },
   getOneUser: async (req, res) => {
     const data = await User.findOne({
       where: { id: req.params.id },
     });
-    res.status(202).json({ message: "berhasil", data: data });
+    res.status(202).json({ message: "succes", data: data });
   },
 };
