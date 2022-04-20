@@ -1,4 +1,4 @@
-const { User } = require("../helper/relation");
+const { User, MyList } = require("../helper/relation");
 const { hash, compare } = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRound = 10;
@@ -91,6 +91,7 @@ module.exports = {
   getOneUser: async (req, res) => {
     const data = await User.findOne({
       where: { id: req.params.id },
+      include: [{ model: MyList }],
     });
     res.status(202).json({ message: "succes", data: data });
   },
