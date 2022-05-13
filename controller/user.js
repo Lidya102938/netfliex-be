@@ -9,6 +9,7 @@ module.exports = {
     const hashPassword = await hash(password, saltRound);
     try {
       const data = await User.create({
+        avatar:req.body.avatar,
         email: req.body.email,
         fullName: req.body.fullName,
         password: hashPassword,

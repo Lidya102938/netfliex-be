@@ -9,7 +9,7 @@ module.exports = {
       .then((response) => {
         res.status(200).json({ data: response.data });
       })
-      .cath((err) => {
+      .catch((err) => {
         res.status(404).json({ message: err.message });
       });
   },
@@ -24,7 +24,7 @@ module.exports = {
       .then((response) => {
         res.status(200).json({ data: response.data.results });
       })
-      .cath((err) => {
+      .catch((err) => {
         res.status(404).json({ message: err.message });
       });
   },
@@ -37,7 +37,7 @@ module.exports = {
       .then((response) => {
         res.status(200).json({ data: response.data.genres });
       })
-      .cath((err) => {
+      .catch((err) => {
         res.status(404).json({ message: err.message });
       });
   },
@@ -49,7 +49,7 @@ module.exports = {
       .then((response) => {
         res.status(200).json({ data: response.data.results });
       })
-      .cath((err) => {
+      .catch((err) => {
         res.status(404).json({ message: err.message });
       });
   },
@@ -62,7 +62,7 @@ module.exports = {
       .then((response) => {
         res.status(200).json({ data: response.data });
       })
-      .cath((err) => {
+      .catch((err) => {
         res.status(404).json({ message: err.message });
       });
   },
@@ -76,7 +76,7 @@ module.exports = {
       .then((response) => {
         res.status(200).json({ data: response.data });
       })
-      .cath((err) => {
+      .catch((err) => {
         res.status(404).json({ message: err.message });
       });
   },
@@ -90,7 +90,7 @@ module.exports = {
       .then((response) => {
         res.status(200).json({ data: response.data });
       })
-      .cath((err) => {
+      .catch((err) => {
         res.status(404).json({ message: err.message });
       });
   },
@@ -105,7 +105,7 @@ module.exports = {
       .then((response) => {
         res.status(200).json({ data: response.data.results });
       })
-      .cath((err) => {
+      .catch((err) => {
         res.status(404).json({ message: err.message });
       });
   },
@@ -118,7 +118,7 @@ module.exports = {
       .then((response) => {
         res.status(200).json({ data: response.data.results });
       })
-      .cath((err) => {
+      .catch((err) => {
         res.status(404).json({ message: err.message });
       });
   },
